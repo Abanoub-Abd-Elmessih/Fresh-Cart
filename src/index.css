@@ -49,3 +49,7 @@
       transform: rotate(-360deg);
     }
   } 
+
+  .active{
+    @apply text-green-500 duration-300
+  }

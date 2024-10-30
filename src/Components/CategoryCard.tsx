@@ -18,7 +18,7 @@ export default function CategoryCard({ Image, Name }: Categories) {
   return (
     <div
       data-aos="fade-up"
-      className="rounded-xl p-3 bg-slate-200 font-inter text-gray-800 mx-3"
+      className="rounded-xl p-3 bg-slate-200 font-inter text-gray-800 mx-3 shadow-lg"
     >
       <img
         src={Image}

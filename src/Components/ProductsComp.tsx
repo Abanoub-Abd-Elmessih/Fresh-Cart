@@ -21,7 +21,7 @@ interface ProductsProps{
   limit?:number
 }
 
-export default function Products({limit}:ProductsProps) {
+export default function ProductsComp({limit}:ProductsProps) {
   // Function to fetch all products
   async function getAllProducts(): Promise<Product[]> {
     const response = await axios.get<ProductsResponse>('https://ecommerce.routemisr.com/api/v1/products');

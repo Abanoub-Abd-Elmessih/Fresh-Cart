@@ -1,13 +1,50 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import Home from "./pages/Home";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from "./pages/Layout";
+import  { Suspense, lazy } from "react";
+
+// Lazy load the components
+const Categories = lazy(() => import("./pages/Categories"));
+const ProductsComp = lazy(() => import("./Components/ProductsComp"));
 
 export default function App() {
-  const query = new QueryClient()
+  const query = new QueryClient();
+  
+  const router = createBrowserRouter([
+    {
+      path: "",
+      element: <Layout />,
+      children: [
+        {
+          index: true,
+          element: <Home />,
+        },
+        {
+          path: "Products",
+          element: (
+            <Suspense fallback={<div className="loader"></div>}>
+              <ProductsComp />
+            </Suspense>
+          ),
+        },
+        {
+          path: "Categories",
+          element: (
+            <Suspense fallback={<div className="loader"></div>}>
+              <Categories />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+  ]);
+
   return (
     <div>
       <QueryClientProvider client={query}>
-      <Home/>
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </div>
-  )
+  );
 }
