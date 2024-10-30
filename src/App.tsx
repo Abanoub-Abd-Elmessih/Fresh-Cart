@@ -23,7 +23,7 @@ export default function App() {
         {
           path: "Products",
           element: (
-            <Suspense fallback={<div className="loader"></div>}>
+            <Suspense>
               <ProductsComp />
             </Suspense>
           ),
@@ -31,7 +31,7 @@ export default function App() {
         {
           path: "Categories",
           element: (
-            <Suspense fallback={<div className="loader"></div>}>
+            <Suspense>
               <Categories />
             </Suspense>
           ),

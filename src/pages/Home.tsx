@@ -1,22 +1,13 @@
 import Hero1 from "../assets/Hero1.png";
 import Hero2 from "../assets/Hero2.png";
-import { useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Title from "../Components/Title";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import Products from "../Components/ProductsComp";
 import CategorySlider from "../Components/CategorySlider";
 
 export default function Home() {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-  }, []);
 
   return (
     <div className="">
@@ -47,7 +38,7 @@ function HeroSection(){
   };
   return(
     <div className="relative min-h-[550px] sm:min-h-[650px] bg-gray-100 flex justify-center items-center mb-10 shadow-md duration-200 ">
-    <div className="container p-5" data-aos="fade-up">
+    <div className="container p-5">
       <Slider {...settings}>
         {/* Slide 1 */}
         <div>

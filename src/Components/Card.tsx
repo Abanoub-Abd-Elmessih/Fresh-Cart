@@ -1,6 +1,4 @@
-import { useEffect, useMemo } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { useMemo } from "react";
 import { CiHeart } from "react-icons/ci";
 import { IoBagHandleOutline } from "react-icons/io5";
 
@@ -23,19 +21,10 @@ export default function Card({
   Discount,
 }: CardTypes) {
   
-  // Initialize AOS only once globally (not per card)
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true, // Prevents re-triggering animation on scroll back
-    });
-  }, []);
-  // Use useMemo to avoid recalculating the truncated name on every render
   const truncatedName = useMemo(() => getThreeWords(ProductName), [ProductName]);
 
   return (
     <div
-      data-aos="fade-up"
       className="shadow-lg font-inter p-3 text-gray-800 bg-gray-200 my-3 rounded-lg overflow-hidden"
     >
       {/* Product Image and Heart Icon */}

@@ -1,20 +1,10 @@
-import { useEffect } from "react";
 import Logo from "../assets/favicon.png";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import { Link, NavLink } from "react-router-dom";
 
 export default function Navbar() {
 
-    useEffect(() => {
-        AOS.init({
-          duration: 1000,
-          once: true,
-        });
-      }, []);
-
   return (
-    <nav className="bg-white border-gray-200 font-inter" data-aos="fade-down">
+    <nav className="bg-white border-gray-200 font-inter">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           to={'/'}
