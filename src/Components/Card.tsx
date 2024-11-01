@@ -1,10 +1,12 @@
 import { useMemo } from "react";
 import { CiHeart } from "react-icons/ci";
 import { IoBagHandleOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 interface CardTypes {
-  ProductImage: string;
   ProductName: string;
+  id: string;
+  ProductImage: string;
   ProductPrice: number;
   Discount?: number;
 }
@@ -15,6 +17,7 @@ function getThreeWords(name: string) {
 }
 
 export default function Card({
+  id,
   ProductImage,
   ProductName,
   ProductPrice,
@@ -24,7 +27,7 @@ export default function Card({
   const truncatedName = useMemo(() => getThreeWords(ProductName), [ProductName]);
 
   return (
-    <div
+    <Link to={`/Products/specificProduct/${id}`} // Corrected link
       className="shadow-lg font-inter p-3 text-gray-800 bg-gray-200 my-3 rounded-lg overflow-hidden"
     >
       {/* Product Image and Heart Icon */}
@@ -58,6 +61,6 @@ export default function Card({
           <IoBagHandleOutline />
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

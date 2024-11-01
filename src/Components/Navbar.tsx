@@ -6,7 +6,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-white border-gray-200 font-inter">
+    <nav className="bg-white border-gray-200 font-inter shadow-lg">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           to={'/'}
@@ -50,6 +50,7 @@ export default function Navbar() {
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
             <li>
               <NavLink
+              onClick={()=>setIsOpen(false)}
                 to={'/'}
                 className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
               >
@@ -58,6 +59,7 @@ export default function Navbar() {
             </li>
             <li>
               <NavLink
+              onClick={()=>setIsOpen(false)}
                 to={'/Categories'}
                 className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
               >
@@ -66,6 +68,7 @@ export default function Navbar() {
             </li>
             <li>
               <NavLink
+              onClick={()=>setIsOpen(false)}
                 to={'/Products'}
                 className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
               >
