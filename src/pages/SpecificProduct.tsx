@@ -89,9 +89,12 @@ export default function SpecificProduct() {
   }
 
   return (
-    <div className="p-4 font-inter border-y">
-      <img src={mainImage} alt={specificProduct?.title} className="border-2 border-gray-400 shadow-lg rounded-xl" />
-      <div className="grid grid-cols-4 gap-3 my-5">
+    <div className="p-4 font-inter border-y container">
+      {/* Main Product */}
+      <div className="md:grid md:grid-cols-10 md:gap-5">
+      {/* Images Section */}
+      <div className="md:col-span-1 order-2">
+          <div className="grid grid-cols-4 gap-3 my-5 md:my-0 md:grid-cols-1">
         {specificProduct?.images?.map((image, index) => (
           <img
             src={image}
@@ -102,7 +105,14 @@ export default function SpecificProduct() {
           />
         ))}
       </div>
-      <h3 className="text-3xl font-bold my-4">{specificProduct?.title}</h3>
+      </div>
+        {/* Main Image */}
+          <div className="md:col-span-4 md:px-5 order-1">
+            <img src={mainImage} alt={specificProduct?.title} className="border-2 border-gray-400 shadow-lg rounded-xl" />
+          </div>
+      {/* Product Details */}
+      <div className="col-span-5 order-3">
+      <h3 className="text-3xl font-bold my-4 md:my-0">{specificProduct?.title}</h3>
 
       <div className="flex items-center my-2">
         <img src={specificProduct?.brand.image} alt={specificProduct?.brand.name} className="w-10 h-10 mr-2" />
@@ -125,6 +135,8 @@ export default function SpecificProduct() {
       <button className="bg-gradient-to-r from-emerald-400 to-emerald-600 text-white p-2 mt-7 rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300">
         Add To Cart
       </button>
+      </div>
+      </div>
 
       {/* Render related products */}
       <h2 className="text-2xl font-bold my-5">Related Products</h2>

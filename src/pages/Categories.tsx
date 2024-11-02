@@ -20,9 +20,9 @@ export default function Categories() {
   }
 
   return (
-    <div className="container p-5">
+    <div className="container md:p-5">
             <Title Title1="Our" Title2="Categories"/>
-      <div className="grid p-3 grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5">
+      <div className="grid p-1 grid-cols-2 lg:grid-cols-4 gap-y-5 md:gap-5">
         {categories?.map((category) => (
             <CategoryCard key={category._id} Name={category.name} Image={category.image}/>
         ))}

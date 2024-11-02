@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Title from "../Components/Title";
 import CategorySlider from "../Components/CategorySlider";
 import NewsLetterBox from "../Components/NewsLetterBox";
-import Products from "./Products";
+import ProductsComp from "../Components/ProductsComp";
 
 export default function Home() {
   return (
@@ -16,7 +16,7 @@ export default function Home() {
       <div className="container p-3 md:p-0">
         {/* New Arrivals */}
         <Title Title1="New" Title2="Arrivals" />
-        <Products limit={5} />
+        <ProductsComp limit={5} />
         {/* Our Categories */}
         <Title Title1="Our" Title2="Categories" />
         <CategorySlider />

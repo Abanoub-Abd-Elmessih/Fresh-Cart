@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import Home from "./pages/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./pages/Layout";
-import  { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 
 // Lazy load the components
 const Categories = lazy(() => import("./pages/Categories"));
@@ -11,7 +11,7 @@ const SpecificProduct = lazy(() => import("./pages/SpecificProduct"));
 
 export default function App() {
   const query = new QueryClient();
-  
+
   const router = createBrowserRouter([
     {
       path: "",
