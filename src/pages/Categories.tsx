@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import CategoryCard from "../Components/CategoryCard";
 import Title from "../Components/Title";
 import { useCategories } from "../hooks/useCategories";
@@ -5,14 +6,25 @@ import { useCategories } from "../hooks/useCategories";
 export default function Categories() {
   const { isLoading, isError, data: categories } = useCategories();
 
-  if (isLoading) {
-    document.body.style.overflow = 'hidden';
-    return<div className="loader-overlay">
-  <div className="loader" />
-</div>
+  useEffect(() => {
+    if (isLoading) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Cleanup overflow style on component unmount
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isLoading]);
 
-  }else{
-    document.body.style.overflow = 'auto';
+  if (isLoading) {
+    return (
+      <div className="loader-overlay">
+        <div className="loader" />
+      </div>
+    );
   }
 
   if (isError) {
@@ -21,10 +33,10 @@ export default function Categories() {
 
   return (
     <div className="container md:p-5">
-            <Title Title1="Our" Title2="Categories"/>
+      <Title Title1="Our" Title2="Categories"/>
       <div className="grid p-1 grid-cols-2 lg:grid-cols-4 gap-y-5 md:gap-5">
         {categories?.map((category) => (
-            <CategoryCard key={category._id} Name={category.name} Image={category.image}/>
+          <CategoryCard key={category._id} Name={category.name} Image={category.image}/>
         ))}
       </div>
     </div>
