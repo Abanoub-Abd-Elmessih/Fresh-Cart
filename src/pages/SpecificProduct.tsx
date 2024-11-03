@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import Card from "../Components/Card";
 import { useState, useEffect } from "react"; // Import useEffect
+import { CiHeart } from "react-icons/ci";
 
 interface Brand {
   image: string;
@@ -44,7 +45,7 @@ export default function SpecificProduct() {
 
   async function getRelatedProducts(categoryId: string) {
     const response = await axios.get<{ data: RelatedProduct[] }>(
-      `https://ecommerce.routemisr.com/api/v1/products?category=${categoryId}&limit=6`
+      `https://ecommerce.routemisr.com/api/v1/products?category=${categoryId}&limit=5`
     );
     return response.data.data;
   }
@@ -132,9 +133,13 @@ export default function SpecificProduct() {
       </p>
       <p className="font-bold my-3">Description:</p>
       <p>{specificProduct?.description}</p>
-      <button className="bg-gradient-to-r from-emerald-400 to-emerald-600 text-white p-2 mt-7 rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300">
+      <div className="flex items-center justify-between md:justify-normal md:gap-5 mt-7">
+
+      <button className="bg-gradient-to-r from-emerald-400 to-emerald-600 text-white p-2 rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300">
         Add To Cart
       </button>
+      <span className="border-2 border-opacity-65 border-black rounded-full p-1 text-2xl hover:text-red-500 hover:border-red-500 cursor-pointer duration-300"><CiHeart /></span>
+      </div>
       </div>
       </div>
 

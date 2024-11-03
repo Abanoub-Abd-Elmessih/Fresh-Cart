@@ -19,9 +19,10 @@ interface ProductsResponse {
 
 interface ProductsProps {
   limit?: number;
+  searchTerm?:string;
 }
 
-export default function Products({ limit }: ProductsProps) {
+export default function Products({ limit , searchTerm="" }: ProductsProps) {
   // Function to fetch all products
   async function getAllProducts(): Promise<Product[]> {
     const response = await axios.get<ProductsResponse>(
@@ -59,11 +60,11 @@ export default function Products({ limit }: ProductsProps) {
     return <span>Error loading products</span>;
   }
 
-  const displayedProducts = limit ? products?.slice(0, limit) : products;
-
+  const filteredProduct =products?.filter((product)=>product?.title?.toLowerCase().includes(searchTerm.toLowerCase()))
+  const displayedProducts = limit ? filteredProduct?.slice(0, limit) : filteredProduct;
   // Render the list of products
   return (
-    <div className="grid  p-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+    <div className="grid p-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
       {displayedProducts?.map((product) => (
         <Card
           id={product._id}
