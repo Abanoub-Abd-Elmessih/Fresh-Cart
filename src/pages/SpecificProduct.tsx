@@ -91,9 +91,9 @@ export default function SpecificProduct() {
   return (
     <div className="p-4 font-inter border-y container">
       {/* Main Product */}
-      <div className="md:grid md:grid-cols-10 md:gap-5">
+      <div className="grid md:grid-cols-6 lg:grid-cols-10 md:gap-5 border-b-2 pb-4">
       {/* Images Section */}
-      <div className="md:col-span-1 order-2">
+      <div className="col-span-12 md:col-span-1 order-2 md:order-1">
           <div className="grid grid-cols-4 gap-3 my-5 md:my-0 md:grid-cols-1">
         {specificProduct?.images?.map((image, index) => (
           <img
@@ -107,11 +107,11 @@ export default function SpecificProduct() {
       </div>
       </div>
         {/* Main Image */}
-          <div className="md:col-span-4 md:px-5 order-1">
+          <div className="col-span-12 md:col-span-5 lg:col-span-4 md:px-5 order-1 md:order-2">
             <img src={mainImage} alt={specificProduct?.title} className="border-2 border-gray-400 shadow-lg rounded-xl" />
           </div>
       {/* Product Details */}
-      <div className="col-span-5 order-3">
+      <div className="col-span-12 md:col-span-5 order-3">
       <h3 className="text-3xl font-bold my-4 md:my-0">{specificProduct?.title}</h3>
 
       <div className="flex items-center my-2">
@@ -140,7 +140,7 @@ export default function SpecificProduct() {
 
       {/* Render related products */}
       <h2 className="text-2xl font-bold my-5">Related Products</h2>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {relatedProducts?.map((product) => (
           <Card
             ProductImage={product.imageCover}
