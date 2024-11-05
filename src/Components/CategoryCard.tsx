@@ -12,7 +12,7 @@ export default function CategoryCard({ Image, Name }: Categories) {
       <img
         src={Image}
         alt="Category Image"
-        className="w-full h-56 rounded-xl object-cover"
+        className="w-full h-56 rounded-xl object-cover object-top"
       />
       <p className="mt-3">{Name}</p>
     </div>
