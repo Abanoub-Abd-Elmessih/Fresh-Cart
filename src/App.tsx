@@ -8,6 +8,7 @@ import { Suspense, lazy } from "react";
 const Categories = lazy(() => import("./pages/Categories"));
 const Products = lazy(() => import("./pages/Products"));
 const SpecificProduct = lazy(() => import("./pages/SpecificProduct"));
+const Brands = lazy(() => import("./pages/Brands"));
 
 export default function App() {
   const query = new QueryClient();
@@ -42,6 +43,14 @@ export default function App() {
           element: (
             <Suspense>
               <SpecificProduct />
+            </Suspense>
+          ),
+        },
+        {
+          path: "Brands",
+          element: (
+            <Suspense>
+              <Brands />
             </Suspense>
           ),
         },
