@@ -38,20 +38,16 @@ function HeroSection() {
     autoplay: true,
     autoplaySpeed: 3000,
   };
-
   return (
-    <div className="relative w-full overflow-hidden">
-      {/* Background Layer */}
-      <div className="absolute inset-0 bg-white bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] z-[-2]"></div>
-
-      {/* Content Layer */}
-      <div className="container p-5 relative z-10">
+    <div className="relative min-h-[550px] sm:min-h-[650px] bg-slate-50 flex justify-center items-center mb-10 shadow-md duration-200">
+      <div className="absolute bottom-0 left-0 right-0 top-0 md:bg-[radial-gradient(circle_800px_at_100%_200px,#d5c5ff,transparent)] bg-[radial-gradient(circle_400px_at_100%_200px,#d5c5ff,transparent)]" />
+      <div className="container p-5">
         <Slider {...settings}>
           {/* Slide 1 */}
           <div>
             <div className="flex flex-col md:flex-row gap-4 md:gap-0 items-center justify-between md:justify-around">
               {/* Text Section */}
-              <div>
+              <div className="">
                 <p className="font-bold md:text-6xl text-3xl my-5">
                   Upto 50% off on all <br /> Men's Wear
                 </p>
@@ -74,12 +70,12 @@ function HeroSection() {
           <div>
             <div className="flex flex-col md:flex-row gap-4 md:gap-0 items-center justify-between md:justify-around">
               {/* Text Section */}
-              <div>
+              <div className="">
                 <p className="font-bold md:text-6xl text-3xl my-5">
                   Upto 30% off on all <br /> Women's Wear
                 </p>
                 <p className="tracking-wider font-thin mt-5">
-                  Explore our stylish collection of women's fashion, from
+                  "Explore our stylish collection of women's fashion, from
                   everyday essentials to elegant outfits. <br /> Don't miss this
                   limited-time offer!
                 </p>
@@ -98,4 +94,3 @@ function HeroSection() {
     </div>
   );
 }
-

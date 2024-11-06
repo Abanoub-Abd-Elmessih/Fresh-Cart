@@ -10,6 +10,7 @@ const Products = lazy(() => import("./pages/Products"));
 const SpecificProduct = lazy(() => import("./pages/SpecificProduct"));
 const Brands = lazy(() => import("./pages/Brands"));
 const Cart = lazy(() => import("./pages/Cart"));
+const Signup = lazy(() => import("./pages/Signup"));
 
 export default function App() {
   const query = new QueryClient();
@@ -60,6 +61,14 @@ export default function App() {
           element: (
             <Suspense>
               <Cart />
+            </Suspense>
+          ),
+        },
+        {
+          path: "Signup",
+          element: (
+            <Suspense>
+              <Signup />
             </Suspense>
           ),
         },

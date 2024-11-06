@@ -69,3 +69,9 @@
   .active{
     @apply text-green-500 duration-300
   }
+
+
+  .bg{
+    background: rgb(6,125,104);
+    background: linear-gradient(35deg, rgba(6,125,104,1) 10%, rgba(86,126,161,0.8743872549019608) 29%, rgba(107,68,148,1) 50%, rgba(100,79,146,1) 53%, rgba(47,158,133,0.9500175070028011) 75%, rgba(47,77,158,0.9500175070028011) 88%);
+  }
