@@ -96,10 +96,10 @@ export default function Navbar() {
             <li>
               <NavLink
               onClick={()=>setIsOpen(false)}
-                to={'/Signup'}
+                to={'/Login'}
                 className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
               >
-                SignUp
+                Login
               </NavLink>
             </li>
           </ul>

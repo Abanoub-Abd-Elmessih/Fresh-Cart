@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./pages/Layout";
 import { Suspense, lazy } from "react";
+import AuthContextProvider from "./Context/AuthContext";
 
 // Lazy load the components
 const Categories = lazy(() => import("./pages/Categories"));
@@ -11,6 +12,8 @@ const SpecificProduct = lazy(() => import("./pages/SpecificProduct"));
 const Brands = lazy(() => import("./pages/Brands"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Signup = lazy(() => import("./pages/Signup"));
+const Login = lazy(() => import("./pages/Login"));
+const ForgetPassword = lazy(() => import("./pages/forgetPassword"));
 
 export default function App() {
   const query = new QueryClient();
@@ -72,6 +75,22 @@ export default function App() {
             </Suspense>
           ),
         },
+        {
+          path: "Login",
+          element: (
+            <Suspense>
+              <Login />
+            </Suspense>
+          ),
+        },
+        {
+          path: "forgetpassword",
+          element: (
+            <Suspense>
+              <ForgetPassword />
+            </Suspense>
+          ),
+        },
       ],
     },
   ]);
@@ -79,7 +98,9 @@ export default function App() {
   return (
     <div>
       <QueryClientProvider client={query}>
+        <AuthContextProvider>
         <RouterProvider router={router} />
+        </AuthContextProvider>
       </QueryClientProvider>
     </div>
   );

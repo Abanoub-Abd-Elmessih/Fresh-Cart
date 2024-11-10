@@ -16,8 +16,8 @@ export default function Footer() {
     <hr className="my-6 border-gray-200" />
     <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
       <p className="text-sm text-gray-500">© Copyright 2024. All Rights Reserved.</p>
-      <p className="text-sm text-gray-500">Developed By <b>Abanoub Abd Elmessih</b></p>
-      <div className="flex -mx-2 text-xl">
+      <p className="text-sm md:me-5 text-gray-500">Developed By <b>Abanoub Abd Elmessih</b></p>
+      <div className="flex mx-2 text-xl">
         <a href="https://www.linkedin.com/in/abanoub-abd-elmessih/" target='_blank' className="mx-2 text-gray-600 transition-colors duration-300 hover:text-emerald-500">
         <FaLinkedin />
         </a>
@@ -27,7 +27,6 @@ export default function Footer() {
         <a href="mailto:abanoubabdelmessih110@gmail.com" target='_blank' className="mx-2 text-gray-600 transition-colors duration-300 hover:text-emerald-500">
         <SiGmail />
         </a>
-        {/* Repeat similar structure for other social icons */}
       </div>
     </div>
   </div>

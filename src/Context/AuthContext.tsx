@@ -1,14 +1,15 @@
 import React, { createContext, useEffect, useState, ReactNode } from "react";
-// eslint-disable-next-line react-refresh/only-export-components
 
 export const AuthContext = createContext<{
     token: string;
     setToken: React.Dispatch<React.SetStateAction<string>>;
-} | undefined>(undefined);
-
+}>({
+    token: "", // Default token value
+    setToken: () => {}, // Empty function as a fallback
+});
 
 interface AuthContextProviderProps {
-    children: ReactNode; // Define the type for children
+    children: ReactNode;
 }
 
 const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) => {
