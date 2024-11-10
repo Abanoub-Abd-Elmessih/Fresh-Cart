@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AuthContext } from "../Context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as yup from 'yup';
 import { useFormik } from "formik";
@@ -94,7 +94,7 @@ export default function Signup() {
     return (
         <div className="container p-10 text-emerald-600">
             <h2 className="text-3xl font-inter text-center my-7 font-semibold">SignUp Page</h2>
-            <form onSubmit={formik.handleSubmit} className="border-2 border-emerald-400 shadow-md p-5 rounded-lg">
+            <form onSubmit={formik.handleSubmit} className="border-2 border-emerald-400 shadow-md p-5 rounded-lg my-2">
                 <div className="grid gap-6 mb-6 md:grid-cols-2">
                     <div>
                         <label htmlFor="first_name" className="block mb-2 text-sm font-medium ">Your name</label>
@@ -185,6 +185,7 @@ export default function Signup() {
 
                 <button type="submit" className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign up</button>
             </form>
+            <Link to={'/Login'} className="underline text-center font-inter text-xl py-3 my-10">Already Have account?</Link>
         </div>
     );
 }

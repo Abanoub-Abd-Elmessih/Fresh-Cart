@@ -145,6 +145,7 @@ export default function Login() {
                     </Link>
                 </div>
             </form>
+            <Link to={'/signup'} className="underline text-center font-inter text-xl py-3">New User ?</Link>
         </div>
     );
 }

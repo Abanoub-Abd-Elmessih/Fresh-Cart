@@ -99,7 +99,7 @@ export default function Navbar() {
                 <NavLink
                   onClick={() => {
                     setIsOpen(false);
-                    setToken(""); // This logs the user out by clearing the token
+                    setToken("");
                   }}
                   to={"/Login"}
                   className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
@@ -114,7 +114,7 @@ export default function Navbar() {
                   to={"/Login"}
                   className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
                 >
-                  Login
+                  Login or Signup
                 </NavLink>
               </li>
             )}
