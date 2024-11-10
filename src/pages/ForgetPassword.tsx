@@ -1,17 +1,16 @@
 import axios from "axios";
 import { useFormik } from "formik";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { AuthContext } from "../Context/AuthContext";
 
 interface Values {
   email: string;
 }
 
 export default function ForgetPassword() {
-  const { token } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false); // Loading state
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -29,6 +28,7 @@ export default function ForgetPassword() {
         }
       );
       console.log("Forgot password response data", response.data);
+      navigate('/resetcode')
     } catch (error) {
       console.error("Error sending email:", error);
     } finally {
@@ -36,13 +36,6 @@ export default function ForgetPassword() {
     }
   }
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (token) {
-      navigate("/");
-    }
-  }, [token, navigate]);
 
   const formik = useFormik({
     initialValues: {

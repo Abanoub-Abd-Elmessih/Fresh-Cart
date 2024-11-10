@@ -1,22 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Logo from "../assets/favicon.png";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../Context/AuthContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { token, setToken } = useContext(AuthContext);
 
   return (
     <nav className="bg-white border-gray-200 font-inter shadow-lg">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
-          to={'/'}
+          to={"/"}
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <img
-            src={Logo}
-            className="h-8"
-            alt="Flowbite Logo"
-          />
+          <img src={Logo} className="h-8" alt="Flowbite Logo" />
           <span className="self-center text-emerald-500 text-2xl font-semibold whitespace-nowrap">
             Fresh Cart
           </span>
@@ -46,12 +44,15 @@ export default function Navbar() {
             />
           </svg>
         </button>
-        <div className={`${isOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`} id="navbar-default">
+        <div
+          className={`${isOpen ? "block" : "hidden"} w-full md:block md:w-auto`}
+          id="navbar-default"
+        >
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
             <li>
               <NavLink
-              onClick={()=>setIsOpen(false)}
-                to={'/'}
+                onClick={() => setIsOpen(false)}
+                to={"/"}
                 className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
               >
                 Home
@@ -59,8 +60,8 @@ export default function Navbar() {
             </li>
             <li>
               <NavLink
-              onClick={()=>setIsOpen(false)}
-                to={'/Categories'}
+                onClick={() => setIsOpen(false)}
+                to={"/Categories"}
                 className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
               >
                 Categories
@@ -68,8 +69,8 @@ export default function Navbar() {
             </li>
             <li>
               <NavLink
-              onClick={()=>setIsOpen(false)}
-                to={'/Products'}
+                onClick={() => setIsOpen(false)}
+                to={"/Products"}
                 className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
               >
                 Products
@@ -77,8 +78,8 @@ export default function Navbar() {
             </li>
             <li>
               <NavLink
-              onClick={()=>setIsOpen(false)}
-                to={'/Cart'}
+                onClick={() => setIsOpen(false)}
+                to={"/Cart"}
                 className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
               >
                 Cart
@@ -86,22 +87,37 @@ export default function Navbar() {
             </li>
             <li>
               <NavLink
-              onClick={()=>setIsOpen(false)}
-                to={'/Brands'}
+                onClick={() => setIsOpen(false)}
+                to={"/Brands"}
                 className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
               >
                 Brands
               </NavLink>
             </li>
-            <li>
-              <NavLink
-              onClick={()=>setIsOpen(false)}
-                to={'/Login'}
-                className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
-              >
-                Login
-              </NavLink>
-            </li>
+            {token ? (
+              <li>
+                <NavLink
+                  onClick={() => {
+                    setIsOpen(false);
+                    setToken(""); // This logs the user out by clearing the token
+                  }}
+                  to={"/Login"}
+                  className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
+                >
+                  Logout
+                </NavLink>
+              </li>
+            ) : (
+              <li>
+                <NavLink
+                  onClick={() => setIsOpen(false)}
+                  to={"/Login"}
+                  className="duration-300 block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-emerald-500 md:p-0"
+                >
+                  Login
+                </NavLink>
+              </li>
+            )}
           </ul>
         </div>
       </div>
