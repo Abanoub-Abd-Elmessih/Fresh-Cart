@@ -3,19 +3,17 @@ import Home from "./pages/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./pages/Layout";
 import { Suspense, lazy } from "react";
-import AuthContextProvider from "./Context/AuthContext";
 import ForgetPassword from "./pages/ForgetPassword";
 import ResetCode from "./pages/ResetCode";
 import ResetAccount from "./pages/ResetAccount";
-import ProtectedRoute from "./Components/ProtectedRoute";
-import WishList from "./pages/WishList";
+import AuthContextProvider from "./Context/AuthContext";
+// import ProtectedRoute from "./Components/ProtectedRoute";
 
 // Lazy load the components
 const Categories = lazy(() => import("./pages/Categories"));
 const Products = lazy(() => import("./pages/Products"));
 const SpecificProduct = lazy(() => import("./pages/SpecificProduct"));
 const Brands = lazy(() => import("./pages/Brands"));
-const Cart = lazy(() => import("./pages/Cart"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Login = lazy(() => import("./pages/Login"));
 
@@ -63,26 +61,26 @@ export default function App() {
             </Suspense>
           ),
         },
-        {
-          path: "Cart",
-          element: (
-            <Suspense>
-              <ProtectedRoute>
-              <Cart />
-              </ProtectedRoute>
-            </Suspense>
-          ),
-        },
-        {
-          path: "wishlist",
-          element: (
-            <Suspense>
-              <ProtectedRoute>
-              <WishList />
-              </ProtectedRoute>
-            </Suspense>
-          ),
-        },
+        // {
+        //   path: "Cart",
+        //   element: (
+        //     <Suspense>
+        //       <ProtectedRoute>
+        //       <Cart />
+        //       </ProtectedRoute>
+        //     </Suspense>
+        //   ),
+        // },
+        // {
+        //   path: "wishlist",
+        //   element: (
+        //     <Suspense>
+        //       <ProtectedRoute>
+        //       <WishList />
+        //       </ProtectedRoute>
+        //     </Suspense>
+        //   ),
+        // },
         {
           path: "Signup",
           element: (

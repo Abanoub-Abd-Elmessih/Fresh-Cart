@@ -7,6 +7,7 @@ import Title from "../Components/Title";
 import CategorySlider from "../Components/CategorySlider";
 import NewsLetterBox from "../Components/NewsLetterBox";
 import ProductsComp from "../Components/ProductsComp";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
 }
 
 function HeroSection() {
+  const navigate = useNavigate();
   const settings = {
     dots: false,
     infinite: true,
@@ -56,7 +58,7 @@ function HeroSection() {
                   staples to sharp outfits. <br /> Don't miss this limited-time
                   offer!
                 </p>
-                <button className="bg-gradient-to-r from-emerald-400 to-emerald-600 text-white p-2 mt-7 rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                <button className="bg-gradient-to-r from-emerald-400 to-emerald-600 text-white p-2 mt-7 rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300" onClick={() => navigate('/products')}>
                   Order Now
                 </button>
               </div>
@@ -79,7 +81,7 @@ function HeroSection() {
                   everyday essentials to elegant outfits. <br /> Don't miss this
                   limited-time offer!
                 </p>
-                <button className="bg-gradient-to-r from-emerald-400 to-emerald-600 text-white p-2 mt-7 rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                <button className="bg-gradient-to-r from-emerald-400 to-emerald-600 text-white p-2 mt-7 rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300" onClick={() => navigate('/products')}>
                   Order Now
                 </button>
               </div>
