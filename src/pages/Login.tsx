@@ -14,6 +14,7 @@ interface Values {
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(""); // State to store error message
     const { token, setToken } = useContext(AuthContext);
 
     const togglePasswordVisibility = () => {
@@ -22,6 +23,7 @@ export default function Login() {
 
     async function sendData(values: Values) {
         setIsLoading(true);
+        setError(""); // Reset error message before making a request
         try {
             const response = await axios.post(
                 'https://ecommerce.routemisr.com/api/v1/auth/signin',
@@ -32,13 +34,19 @@ export default function Login() {
             );
             console.log('registration data', response.data);
             setToken(response.data.token);
-        } catch (error) {
-            console.error("Login error:", error);
+        } catch (error: unknown) { // Use `unknown` for the error type
+            if (axios.isAxiosError(error)) {
+                // Handle Axios-specific errors
+                setError(error.response?.data?.message || "Login failed. Please try again.");
+            } else {
+                // Handle any other errors
+                setError("An unexpected error occurred. Please try again.");
+            }
         } finally {
             setIsLoading(false);
         }
     }
-
+    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -133,6 +141,11 @@ export default function Login() {
                         </div>
                     )}
                 </div>
+                {error && (
+                    <div className="p-4 mt-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+                        <span className="font-medium">{error}</span>
+                    </div>
+                )}
                 <div className="flex flex-col gap-4 md:flex-row justify-between items-center">
                     <button
                         type="submit"

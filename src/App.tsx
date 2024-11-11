@@ -7,6 +7,8 @@ import AuthContextProvider from "./Context/AuthContext";
 import ForgetPassword from "./pages/ForgetPassword";
 import ResetCode from "./pages/ResetCode";
 import ResetAccount from "./pages/ResetAccount";
+import ProtectedRoute from "./Components/ProtectedRoute";
+import WishList from "./pages/WishList";
 
 // Lazy load the components
 const Categories = lazy(() => import("./pages/Categories"));
@@ -65,7 +67,19 @@ export default function App() {
           path: "Cart",
           element: (
             <Suspense>
+              <ProtectedRoute>
               <Cart />
+              </ProtectedRoute>
+            </Suspense>
+          ),
+        },
+        {
+          path: "wishlist",
+          element: (
+            <Suspense>
+              <ProtectedRoute>
+              <WishList />
+              </ProtectedRoute>
             </Suspense>
           ),
         },
