@@ -40,7 +40,8 @@ export default function Card({
     if (token) {
       setIsInCart(productInCart);
     }
-  }, [cartProducts, id]);
+  }, [cartProducts, id,token]);
+  
 
   const handleCartAction = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent navigation when clicking the cart icon

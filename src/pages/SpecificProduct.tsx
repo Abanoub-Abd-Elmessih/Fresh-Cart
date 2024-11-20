@@ -1,15 +1,13 @@
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { FaStar } from "react-icons/fa";
-import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import Card from "../Components/Card";
-import { useState, useEffect } from "react"; // Import useEffect
+import { useQuery } from "react-query";
+import { FaStar } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
-
-interface Brand {
-  images: string;
-  name: string;
-}
+import { useCart } from "../Context/CartContext";
+import { AuthContext } from "../Context/AuthContext";
+import toast from "react-hot-toast";
+import Card from "../Components/Card";
 
 interface Product {
   _id: string;
@@ -20,7 +18,10 @@ interface Product {
   price: number;
   priceAfterDiscount?: number;
   ratingsAverage?: number;
-  brand: Brand;
+  brand: {
+    images: string;
+    name: string;
+  };
   category: {
     _id: string;
   };
@@ -36,30 +37,70 @@ interface RelatedProduct {
 
 export default function SpecificProduct() {
   const { id } = useParams<{ id: string }>();
-  const [mainImage, setMainImage] = useState<string>(""); // Initialize with an empty string
+  const [mainImage, setMainImage] = useState<string>("");
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
+  const { addProductToCart, deleteProductItem, cartProducts } = useCart();
+  const { token } = useContext(AuthContext);
 
-  async function getSpecificProduct() {
+  useEffect(() => {
+    if (id && token) {
+      const productInCart = cartProducts.some(
+        (product) => product.product.id === id
+      );
+      setIsInCart(productInCart);
+    }
+  }, [cartProducts, id]);
+
+  const handleCartAction = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!id) return; // Guard clause if id is undefined
+
+    if (isAddingToCart) return;
+
+    setIsAddingToCart(true);
+    try {
+      if (!isInCart) {
+        const response = await addProductToCart(id);
+        if (response.data?.status === "success") {
+          setIsInCart(true);
+          toast.success("Added to cart successfully");
+        }
+      } else {
+        const response = await deleteProductItem(id);
+        if (response.data?.status === "success") {
+          setIsInCart(false);
+          toast.success("Removed from cart");
+        }
+      }
+    } catch (error) {
+      toast.error(
+        isInCart ? "Failed to remove from cart" : "Failed to add to cart"
+      );
+      console.error("Cart action error:", error);
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
+  const getSpecificProduct = async () => {
     const response = await axios.get<{ data: Product }>(
       `https://ecommerce.routemisr.com/api/v1/products/${id}`
     );
     return response.data.data;
-  }
+  };
 
-  async function getRelatedProducts(categoryId: string) {
+  const getRelatedProducts = async (categoryId: string) => {
     const response = await axios.get<{ data: RelatedProduct[] }>(
       `https://ecommerce.routemisr.com/api/v1/products?category=${categoryId}&limit=5`
     );
     return response.data.data;
-  }
+  };
 
-  const {
-    isLoading,
-    isError,
-    data: specificProduct,
-  } = useQuery<Product, Error>({
+  const { isLoading, isError, data: specificProduct } = useQuery<Product, Error>({
     queryKey: ["specificProduct", id],
     queryFn: getSpecificProduct,
-    enabled: !!id,
+    enabled: !!id, // Only fetch if id exists
   });
 
   const { data: relatedProducts } = useQuery<RelatedProduct[], Error>({
@@ -73,10 +114,9 @@ export default function SpecificProduct() {
     enabled: Boolean(specificProduct?.category._id),
   });
 
-  // Set the main image when specificProduct is available
   useEffect(() => {
     if (specificProduct) {
-      setMainImage(specificProduct.imageCover); // Set the main image to imageCover initially
+      setMainImage(specificProduct.imageCover);
     }
   }, [specificProduct]);
 
@@ -99,10 +139,8 @@ export default function SpecificProduct() {
     <div className="p-4 font-inter border-y container">
       {/* Main Product */}
       <div className="grid md:grid-cols-6 lg:grid-cols-10 md:gap-5 border-b-2 pb-4">
-        {/* Images Section */}
         <div className="col-span-12 md:col-span-1 order-2 md:order-1">
           <div className="grid grid-cols-4 gap-3 my-5 md:my-0 md:grid-cols-1">
-            {/* Ensure images exist before rendering */}
             {specificProduct?.images && specificProduct.images.length > 0 ? (
               specificProduct.images.map((image, index) => (
                 <img
@@ -110,16 +148,15 @@ export default function SpecificProduct() {
                   key={index}
                   className="w-full border-2 border-gray-400 shadow-lg rounded-lg cursor-pointer"
                   alt="product image"
-                  onClick={() => setMainImage(image)} // Update main image on click
+                  onClick={() => setMainImage(image)}
                 />
               ))
             ) : (
-              <div>No images available</div> // Fallback if no images exist
+              <div>No images available</div>
             )}
           </div>
         </div>
 
-        {/* Main Image */}
         <div className="col-span-12 md:col-span-5 lg:col-span-4 md:px-5 order-1 md:order-2">
           <img
             src={mainImage}
@@ -128,14 +165,12 @@ export default function SpecificProduct() {
           />
         </div>
 
-        {/* Product Details */}
         <div className="col-span-12 md:col-span-5 order-3">
           <h3 className="text-3xl font-bold my-4 md:my-0">
             {specificProduct?.title}
           </h3>
 
           <div className="flex items-center my-2">
-            {/* Ensure specificProduct and brand are defined */}
             {specificProduct?.brand?.images ? (
               <img
                 src={specificProduct.brand.images}
@@ -143,7 +178,7 @@ export default function SpecificProduct() {
                 className="w-10 h-10 mr-2"
               />
             ) : (
-              <div className="w-10 h-10 mr-2 bg-gray-300 rounded-full"></div> // Fallback for missing brand image
+              <div className="w-10 h-10 mr-2 bg-gray-300 rounded-full"></div>
             )}
             <span className="text-lg font-medium">
               {specificProduct?.brand?.name}
@@ -170,9 +205,15 @@ export default function SpecificProduct() {
           <p className="font-bold my-3">Description:</p>
           <p>{specificProduct?.description}</p>
           <div className="flex items-center justify-between md:justify-normal md:gap-5 mt-7">
-            <button className="bg-gradient-to-r from-emerald-400 to-emerald-600 text-white p-2 rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              Add To Cart
+            <button
+              onClick={handleCartAction}
+              className={`bg-emerald-600 text-white p-3 rounded-full shadow-lg transition-colors duration-300 ${
+                isInCart ? "hover:bg-red-500" : ""
+              }`}
+            >
+              {isInCart ? "Remove From Cart" : "Add To Cart"}
             </button>
+
             <span className="border-2 border-opacity-65 border-black rounded-full p-1 text-2xl hover:text-red-500 hover:border-red-500 cursor-pointer duration-300">
               <CiHeart />
             </span>
