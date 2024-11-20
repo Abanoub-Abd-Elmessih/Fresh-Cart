@@ -13,15 +13,18 @@ interface AuthContextProviderProps {
 }
 
 const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) => {
-    const [token, setToken] = useState<string>('');
+    const [token, setToken] = useState<string>(() => {
+        // Retrieve the token from localStorage if available
+        return localStorage.getItem('token') || '';
+    });
 
     useEffect(() => {
         if (token) {
-            localStorage.setItem('token', token);
+            localStorage.setItem('token', token); // Store the token in localStorage
         } else {
-            localStorage.removeItem('token');
+            localStorage.removeItem('token'); // Remove the token from localStorage
         }
-    }, [token]);
+    }, [token]); // Only run when token changes
 
     return (
         <AuthContext.Provider value={{ token, setToken }}>

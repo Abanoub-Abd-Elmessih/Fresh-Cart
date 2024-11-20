@@ -7,7 +7,10 @@ import ForgetPassword from "./pages/ForgetPassword";
 import ResetCode from "./pages/ResetCode";
 import ResetAccount from "./pages/ResetAccount";
 import AuthContextProvider from "./Context/AuthContext";
-// import ProtectedRoute from "./Components/ProtectedRoute";
+import ProtectedRoute from "./Components/ProtectedRoute";
+import Cart from "./pages/Cart";
+import CartContextProvider from "./Context/CartContext";
+import { Toaster } from "react-hot-toast";
 
 // Lazy load the components
 const Categories = lazy(() => import("./pages/Categories"));
@@ -61,16 +64,16 @@ export default function App() {
             </Suspense>
           ),
         },
-        // {
-        //   path: "Cart",
-        //   element: (
-        //     <Suspense>
-        //       <ProtectedRoute>
-        //       <Cart />
-        //       </ProtectedRoute>
-        //     </Suspense>
-        //   ),
-        // },
+        {
+          path: "Cart",
+          element: (
+            <Suspense>
+              <ProtectedRoute>
+                <Cart />
+              </ProtectedRoute>
+            </Suspense>
+          ),
+        },
         // {
         //   path: "wishlist",
         //   element: (
@@ -129,7 +132,10 @@ export default function App() {
     <div>
       <QueryClientProvider client={query}>
         <AuthContextProvider>
-        <RouterProvider router={router} />
+          <CartContextProvider>
+            <Toaster />
+            <RouterProvider router={router} />
+          </CartContextProvider>
         </AuthContextProvider>
       </QueryClientProvider>
     </div>

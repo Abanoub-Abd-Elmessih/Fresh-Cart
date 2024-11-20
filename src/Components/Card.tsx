@@ -1,7 +1,11 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect, useContext } from "react";
 import { CiHeart } from "react-icons/ci";
 import { IoBagHandleOutline } from "react-icons/io5";
+import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { useCart } from "../Context/CartContext";
+import toast from "react-hot-toast";
+import { AuthContext } from "../Context/AuthContext";
 
 interface CardTypes {
   ProductName: string;
@@ -23,11 +27,53 @@ export default function Card({
   ProductPrice,
   Discount,
 }: CardTypes) {
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
+  const { addProductToCart, deleteProductItem, cartProducts } = useCart();
+  const {token } = useContext(AuthContext)
   
   const truncatedName = useMemo(() => getThreeWords(ProductName), [ProductName]);
 
+  // Check if the product is in the cart
+  useEffect(() => {
+    const productInCart = cartProducts.some((product) => product.product.id === id);
+    if (token) {
+      setIsInCart(productInCart);
+    }
+  }, [cartProducts, id]);
+
+  const handleCartAction = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation when clicking the cart icon
+    if (isAddingToCart) return;
+
+    setIsAddingToCart(true);
+    try {
+      if (!isInCart) {
+        // Add to cart
+        const response = await addProductToCart(id);
+        if (response.data?.status === "success") {
+          setIsInCart(true);
+          toast.success("Added to cart successfully");
+        }
+      } else {
+        // Remove from cart
+        const response = await deleteProductItem(id);
+        if (response.data?.status === "success") {
+          setIsInCart(false);
+          toast.success("Removed from cart");
+        }
+      }
+    } catch (error) {
+      toast.error(isInCart ? "Failed to remove from cart" : "Failed to add to cart");
+      console.error("Cart action error:", error);
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
   return (
-    <Link to={`/Products/specificProduct/${id}`} // Corrected link
+    <Link
+      to={`/Products/specificProduct/${id}`} // Corrected link
       className="shadow-lg font-inter p-3 text-gray-800 bg-gray-200 my-3 rounded-lg overflow-hidden"
     >
       {/* Product Image and Heart Icon */}
@@ -57,9 +103,25 @@ export default function Card({
           )}
         </div>
 
-        <div className="border-2 border-opacity-65 border-black w-fit h-fit p-1 rounded-full text-lg cursor-pointer hover:text-emerald-500 hover:border-emerald-500 duration-300">
-          <IoBagHandleOutline />
-        </div>
+        <button
+          onClick={handleCartAction}
+          disabled={isAddingToCart}
+          className={`border-2 border-opacity-65 ${
+            isInCart
+              ? 'border-emerald-500 text-emerald-500'
+              : 'border-black hover:text-emerald-500 hover:border-emerald-500'
+          } w-fit h-fit p-1 rounded-full text-lg cursor-pointer duration-300 relative ${
+            isAddingToCart ? 'opacity-50' : ''
+          }`}
+        >
+          {isAddingToCart ? (
+            <div className="animate-spin rounded-full h-5 w-5 border-2 border-emerald-500 border-t-transparent" />
+          ) : isInCart ? (
+            <IoCheckmarkCircleOutline className="text-emerald-500" />
+          ) : (
+            <IoBagHandleOutline />
+          )}
+        </button>
       </div>
     </Link>
   );
