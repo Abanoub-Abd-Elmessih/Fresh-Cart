@@ -11,6 +11,8 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import Cart from "./pages/Cart";
 import CartContextProvider from "./Context/CartContext";
 import { Toaster } from "react-hot-toast";
+import WishlistContextProvider from "./Context/WishContext";
+import WishlistPage from "./pages/WishList";
 
 // Lazy load the components
 const Categories = lazy(() => import("./pages/Categories"));
@@ -74,16 +76,16 @@ export default function App() {
             </Suspense>
           ),
         },
-        // {
-        //   path: "wishlist",
-        //   element: (
-        //     <Suspense>
-        //       <ProtectedRoute>
-        //       <WishList />
-        //       </ProtectedRoute>
-        //     </Suspense>
-        //   ),
-        // },
+        {
+          path: "wishlist",
+          element: (
+            <Suspense>
+              <ProtectedRoute>
+              <WishlistPage />
+              </ProtectedRoute>
+            </Suspense>
+          ),
+        },
         {
           path: "Signup",
           element: (
@@ -132,10 +134,12 @@ export default function App() {
     <div>
       <QueryClientProvider client={query}>
         <AuthContextProvider>
-          <CartContextProvider>
-            <Toaster />
-            <RouterProvider router={router} />
-          </CartContextProvider>
+          <WishlistContextProvider>
+            <CartContextProvider>
+              <Toaster />
+              <RouterProvider router={router} />
+            </CartContextProvider>
+          </WishlistContextProvider>
         </AuthContextProvider>
       </QueryClientProvider>
     </div>

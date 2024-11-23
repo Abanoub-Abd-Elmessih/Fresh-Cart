@@ -22,14 +22,20 @@ interface CartData {
 export default function Cart() {
   const [cartData, setCartData] = useState<CartData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { getLoggedUserCart, updateCartItemCount, deleteProductItem, setCartItems, clearCart } = useCart();
+  const {
+    getLoggedUserCart,
+    updateCartItemCount,
+    deleteProductItem,
+    setCartItems,
+    clearCart,
+  } = useCart();
 
   async function getCart() {
     try {
       setIsLoading(true);
       const response = await getLoggedUserCart();
-      console.log('Cart Response:', response); // Debug log
-      
+      console.log("Cart Response:", response); // Debug log
+
       if (response.data?.status === "success") {
         setCartData(response.data.data);
         setCartItems(response.data.numOfCartItems);
@@ -38,7 +44,7 @@ export default function Cart() {
         toast.error("Failed to load cart data");
       }
     } catch (error) {
-      console.error('Error fetching cart:', error);
+      console.error("Error fetching cart:", error);
       toast.error("Error loading cart");
       setCartData(null);
     } finally {
@@ -48,7 +54,7 @@ export default function Cart() {
 
   async function updateItemCount(productId: string, count: number) {
     if (count < 1) return;
-    
+
     try {
       const response = await updateCartItemCount(productId, count);
       if (response.data?.status === "success") {
@@ -76,7 +82,6 @@ export default function Cart() {
     }
   }
 
-  
   async function handleClearCart() {
     try {
       const response = await clearCart();
@@ -88,7 +93,7 @@ export default function Cart() {
         toast.error("Failed to clear cart");
       }
     } catch (error) {
-      console.error('Error clearing cart:', error);
+      console.error("Error clearing cart:", error);
       toast.error("Error clearing cart");
     }
   }
@@ -99,13 +104,13 @@ export default function Cart() {
 
   if (isLoading) {
     return (
-      <div className="container py-10">
-        <Title Title1="Your" Title2="Cart" />
-        <div className="text-center">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
       </div>
     );
   }
 
+  
   if (!cartData?.products || cartData.products.length === 0) {
     return (
       <div className="container py-10">
@@ -141,7 +146,10 @@ export default function Cart() {
           </thead>
           <tbody>
             {cartData.products.map((item) => (
-              <tr key={item.product.id} className="bg-white border-b hover:bg-gray-50">
+              <tr
+                key={item.product.id}
+                className="bg-white border-b hover:bg-gray-50"
+              >
                 <td className="p-4 ">
                   <img
                     src={item.product.imageCover}
@@ -155,7 +163,9 @@ export default function Cart() {
                 <td className="px-6 py-4">
                   <div className="flex items-center">
                     <button
-                      onClick={() => updateItemCount(item.product.id, item.count - 1)}
+                      onClick={() =>
+                        updateItemCount(item.product.id, item.count - 1)
+                      }
                       disabled={item.count <= 1}
                       className="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200"
                       type="button"
@@ -191,7 +201,9 @@ export default function Cart() {
                       />
                     </div>
                     <button
-                      onClick={() => updateItemCount(item.product.id, item.count + 1)}
+                      onClick={() =>
+                        updateItemCount(item.product.id, item.count + 1)
+                      }
                       className="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 "
                       type="button"
                     >
@@ -229,16 +241,43 @@ export default function Cart() {
             ))}
           </tbody>
         </table>
-        
+
         <div className="p-4 bg-white ">
-          <div className="flex justify-between">
-            <button onClick={handleClearCart} className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Clear</button>
-            <div className="text-lg font-semibold text-gray-900">
-              Total: ${cartData.totalCartPrice}
+          <div className="flex justify-end">
+            <button
+              onClick={handleClearCart}
+              className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 "
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+            <div className="flex justify-end">
+            <div className="w-1/2 mt-10 shadow-lg border rounded-lg">
+        {/* Order Summary */}
+        <div className="">
+          <div className="bg-white rounded-lg shadow p-6 sticky top-4">
+            <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+
+            <div className="space-y-3">
+              {/* You can add shipping cost, tax, etc. here */}
+
+              <div className="border-t pt-3 mt-3">
+                <div className="flex justify-between font-bold text-lg">
+                  <span>Total:</span>
+                  <span>${cartData.totalCartPrice.toFixed(2)}</span>
+                </div>
+              </div>
+
+              <button className="w-full py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition mt-4">
+                Proceed to Checkout
+              </button>
             </div>
           </div>
         </div>
       </div>
+            </div>
     </div>
   );
 }

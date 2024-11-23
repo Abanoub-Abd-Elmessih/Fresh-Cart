@@ -1,11 +1,11 @@
 import { useMemo, useState, useEffect, useContext } from "react";
 import { CiHeart } from "react-icons/ci";
-import { IoBagHandleOutline } from "react-icons/io5";
-import { IoCheckmarkCircleOutline } from "react-icons/io5";
+import { IoBagHandleOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useCart } from "../Context/CartContext";
 import toast from "react-hot-toast";
 import { AuthContext } from "../Context/AuthContext";
+import { useWishlist } from "../Context/WishContext";
 
 interface CardTypes {
   ProductName: string;
@@ -29,19 +29,27 @@ export default function Card({
 }: CardTypes) {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  const [isUpdatingWishlist, setIsUpdatingWishlist] = useState(false);
   const { addProductToCart, deleteProductItem, cartProducts } = useCart();
-  const {token } = useContext(AuthContext)
-  
+  const { isProductInWishlist, addProductToWishlist, removeProductFromWishlist } = useWishlist();
+  const { token } = useContext(AuthContext);
+
   const truncatedName = useMemo(() => getThreeWords(ProductName), [ProductName]);
+  const [isInWishlist, setIsInWishlist] = useState(isProductInWishlist(id));
 
   // Check if the product is in the cart
   useEffect(() => {
     const productInCart = cartProducts.some((product) => product.product.id === id);
+    
     if (token) {
       setIsInCart(productInCart);
     }
-  }, [cartProducts, id,token]);
-  
+  }, [cartProducts, id, token ]);
+
+  // Sync the wishlist state
+  useEffect(() => {
+    setIsInWishlist(isProductInWishlist(id));
+  }, [isProductInWishlist, id]);
 
   const handleCartAction = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent navigation when clicking the cart icon
@@ -72,6 +80,35 @@ export default function Card({
     }
   };
 
+  const handleWishlistAction = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation when clicking the wishlist icon
+    if (isUpdatingWishlist) return;
+
+    setIsUpdatingWishlist(true);
+    try {
+      if (!isInWishlist) {
+        // Add to wishlist
+        const response = await addProductToWishlist(id);
+        if (response.data?.status === "success") {
+          setIsInWishlist(true);
+          toast.success("Added to wishlist successfully");
+        }
+      } else {
+        // Remove from wishlist
+        const response = await removeProductFromWishlist(id);
+        if (response.data?.status === "success") {
+          setIsInWishlist(false);
+          toast.success("Removed from wishlist");
+        }
+      }
+    } catch (error) {
+      toast.error(isInWishlist ? "Failed to remove from wishlist" : "Failed to add to wishlist");
+      console.error("Wishlist action error:", error);
+    } finally {
+      setIsUpdatingWishlist(false);
+    }
+  };
+
   return (
     <Link
       to={`/Products/specificProduct/${id}`} // Corrected link
@@ -79,9 +116,15 @@ export default function Card({
     >
       {/* Product Image and Heart Icon */}
       <div className="relative overflow-hidden">
-        <div className="absolute right-2 top-2 border-2 border-opacity-65 border-black rounded-full p-1 text-2xl hover:text-red-500 hover:border-red-500 cursor-pointer duration-300">
+        <button
+          onClick={handleWishlistAction}
+          disabled={isUpdatingWishlist}
+          className={`absolute right-2 top-2 border-2 rounded-full border-gray-700 p-1 text-2xl cursor-pointer duration-300 ${
+            isInWishlist ? "text-red-500 border-red-500" : "hover:text-red-500 hover:border-red-500"
+          } ${isUpdatingWishlist ? "opacity-50" : ""}`}
+        >
           <CiHeart />
-        </div>
+        </button>
         <img
           src={ProductImage}
           alt="Product Image"
@@ -109,10 +152,10 @@ export default function Card({
           disabled={isAddingToCart}
           className={`border-2 border-opacity-65 ${
             isInCart
-              ? 'border-emerald-500 text-emerald-500'
-              : 'border-black hover:text-emerald-500 hover:border-emerald-500'
+              ? "border-emerald-500 text-emerald-500"
+              : "border-black hover:text-emerald-500 hover:border-emerald-500"
           } w-fit h-fit p-1 rounded-full text-lg cursor-pointer duration-300 relative ${
-            isAddingToCart ? 'opacity-50' : ''
+            isAddingToCart ? "opacity-50" : ""
           }`}
         >
           {isAddingToCart ? (
